@@ -41,8 +41,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "hyntax": "^1.1.9",
-    "lodash": "^4.17.20"
+    "hyntax": "^1.1.9"
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
