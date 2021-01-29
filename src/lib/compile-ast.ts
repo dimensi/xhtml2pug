@@ -1,14 +1,4 @@
-import {
-  Attr,
-  ConvertOptions,
-  Doctype,
-  Node,
-  Nodes,
-  Script,
-  Style,
-  Tag,
-  Text
-} from './models'
+import { Attr, ConvertOptions, Doctype, Node, Nodes, Script, Style, Tag, Text } from './models';
 
 const wrapAttrs = (str?: string) => (str ? `(${str})` : '');
 
@@ -86,16 +76,16 @@ const compileText = (node: Text, options: IndentOptions) =>
     : ' ' + node.value;
 
 const compileScript = (node: Script, options: IndentOptions) =>
-  `${getIndent(options)}script${wrapAttrs(compileAttrs(node.attrs))}${wrapText(
-    node.value ?? '',
-    { ...options, level: options.level + 1 }
-  )}`;
+  `${getIndent(options)}script${wrapAttrs(compileAttrs(node.attrs))}${wrapText(node.value ?? '', {
+    ...options,
+    level: options.level + 1,
+  })}`;
 
 const compileStyle = (node: Style, options: IndentOptions) =>
-  `${getIndent(options)}style${wrapAttrs(compileAttrs(node.attrs))}${wrapText(
-    node.value ?? '',
-    { ...options, level: options.level + 1 }
-  )}`;
+  `${getIndent(options)}style${wrapAttrs(compileAttrs(node.attrs))}${wrapText(node.value ?? '', {
+    ...options,
+    level: options.level + 1,
+  })}`;
 
 const compileTag = (node: Tag, options: IndentOptions) => {
   const { attrs, className, id } = formatAttrsForTag(node.attrs);
@@ -114,7 +104,6 @@ const compileTag = (node: Tag, options: IndentOptions) => {
 };
 
 export function compileAst(ast: readonly Nodes[], { symbol }: ConvertOptions): string {
-
   const deepCompile = (ast: readonly Nodes[], level = 0) =>
     ast.reduce<readonly string[]>((acc, node) => {
       switch (node.node) {

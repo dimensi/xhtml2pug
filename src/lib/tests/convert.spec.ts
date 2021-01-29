@@ -1,27 +1,31 @@
+import fs from 'fs'
+import path from 'path'
+
 import test from 'ava';
 
 import { convert } from '../convert';
 
-test('convert', async t => {
-  const result = await convert(`<h1>Pug - node template engine</h1>
-    <div id="container" class="col" data-element=1 data-element-1=2>
-      <p>You are amazing</p>
-      <p>Pug is a terse and simple
-         templating language with a
-         strong focus on performance
-         and powerful features.</p>
-    </div>`, {
-    inlineCSS: true
-  });
 
-  t.is(result, `html
-  body
-    h1 Pug - node template engine
-    #container.col(data-element="1" data-element-1="2")
-      p You are amazing
-      p
-        | Pug is a terse and simple
-        | templating language with a
-        | strong focus on performance
-        | and powerful features.`)
-});
+function generateTests() {
+  const dir = path.resolve(__dirname, '../../../../data')
+
+  const inputFiles = fs.readdirSync(dir)
+
+  inputFiles
+    .filter(file => file.includes('.html'))
+    .slice(0, 1)
+    .forEach((inputFile) => {
+      const htmlPath = path.join(dir, inputFile)
+      const pugPath = path.join(dir, inputFile.replace('.html', '.pug'))
+
+      test(`should convert ${path.basename(pugPath)} to output matching ${inputFile}`, (t) => {
+        const html = fs.readFileSync(htmlPath, 'utf-8')
+        const pug = fs.readFileSync(pugPath, 'utf-8')
+
+        t.is(convert(html), pug)
+      })
+  })
+}
+
+
+generateTests()
