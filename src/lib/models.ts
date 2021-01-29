@@ -4,6 +4,7 @@ export enum Node {
   Text,
   Script,
   Style,
+  Comment,
 }
 
 export type Attr = {
@@ -33,6 +34,11 @@ export type Style = {
   readonly value?: string;
 }
 
+export type Comment = {
+  readonly node: Node.Comment;
+  readonly value: string;
+}
+
 export type Tag = {
   readonly node: Node.Tag
   readonly name: string;
@@ -40,9 +46,9 @@ export type Tag = {
   readonly children: ReadonlyArray<Tag | Text>
 }
 
-export type Nodes = Text | Doctype | Script | Style | Tag
+export type Nodes = Text | Doctype | Script | Style | Tag | Comment
 
-export type ConvertOptions = {
+export type PublicOptions = {
   readonly bodyLess: boolean,
   readonly attrComma: boolean,
   readonly encode: boolean,
@@ -50,3 +56,19 @@ export type ConvertOptions = {
   readonly inlineCSS: boolean
   readonly symbol: string
 }
+
+export type ConvertOptions = {
+  readonly bodyLess: boolean,
+  readonly attrSep: string,
+  readonly encode: boolean,
+  readonly doubleQuotes: boolean,
+  readonly inlineCSS: boolean
+  readonly symbol: string
+}
+
+export type IndentOptions = {
+  readonly level: number;
+  readonly symbol: string;
+};
+
+export type CompileOptions = ConvertOptions & IndentOptions

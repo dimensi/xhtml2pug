@@ -1,4 +1,19 @@
-import { Attr, ConvertOptions, Doctype, Node, Nodes, Script, Style, Tag, Text } from './models';
+import { encode } from 'html-entities';
+
+import {
+  Attr,
+  Comment,
+  CompileOptions,
+  ConvertOptions,
+  Doctype,
+  IndentOptions,
+  Node,
+  Nodes,
+  Script,
+  Style,
+  Tag,
+  Text,
+} from './models';
 
 const wrapAttrs = (str?: string) => (str ? `(${str})` : '');
 
@@ -41,11 +56,6 @@ const getNodesWithoutText = (nodes: readonly Nodes[]) => {
   return nodes;
 };
 
-type IndentOptions = {
-  readonly level: number;
-  readonly symbol: string;
-};
-
 const getIndent = ({ level, symbol }: IndentOptions) => symbol.repeat(level);
 
 const wrapText = (str: string, options) =>
@@ -58,70 +68,110 @@ const wrapText = (str: string, options) =>
         .join('\n')
     : '';
 
-const compileAttrs = (attrs: readonly Attr[]) =>
+const wrapInQuotes = (str: string, options: Pick<CompileOptions, 'doubleQuotes'>) => {
+  if (str === undefined) return null;
+  if (options.doubleQuotes && str.includes(`"`)) return `'${str}'`;
+  return str.includes(`'`) ? `"${str}"` : `'${str}'`;
+};
+const keepMultilineAttrValue = (str: string) => str?.replace(/\n/g, '\\\n');
+const compileAttrs = (attrs: readonly Attr[], options: CompileOptions) =>
   attrs
-    .map(({ key, value }) => [key, value ? `"${value}"` : null].filter(Boolean).join('='))
-    .join(' ');
+    .map(({ key, value }) =>
+      [key, keepMultilineAttrValue(wrapInQuotes(value, options))].filter(str => str != null).join('=')
+    )
+    .join(options.attrSep);
 
-const compileDoctype = (node: Doctype, options: IndentOptions) =>
-  `${getIndent(options)}doctype ${compileAttrs(node.attrs)}`;
+const compileDoctype = (node: Doctype, options: CompileOptions) =>
+  `${getIndent(options)}doctype ${compileAttrs(node.attrs, options)}`;
 
-const compileText = (node: Text, options: IndentOptions) =>
-  node.value.includes('\n')
-    ? '\n' +
-      node.value
-        .split('\n')
-        .map(str => `${getIndent(options)}| ${str.trim()}`)
-        .join('\n')
-    : ' ' + node.value;
+const compileText = (node: Text, options: CompileOptions) => {
+  const resultText = node.value
+    .trim()
+    .split('\n')
+    .filter(Boolean)
+    .map(str => `${getIndent(options)}| ${str.trim()}`)
+    .join('\n');
+  return options.encode ? encode(resultText) : resultText;
+};
 
-const compileScript = (node: Script, options: IndentOptions) =>
-  `${getIndent(options)}script${wrapAttrs(compileAttrs(node.attrs))}${wrapText(node.value ?? '', {
-    ...options,
-    level: options.level + 1,
-  })}`;
+const compileSingleLineText = (node: Text, options: CompileOptions) =>
+  options.encode ? encode(node.value.trim()) : node.value.trim();
 
-const compileStyle = (node: Style, options: IndentOptions) =>
-  `${getIndent(options)}style${wrapAttrs(compileAttrs(node.attrs))}${wrapText(node.value ?? '', {
-    ...options,
-    level: options.level + 1,
-  })}`;
+const compileComment = (node: Comment, options: CompileOptions) => {
+  const start = getIndent(options) + '//';
+  const clearedValue = node.value.trim();
 
-const compileTag = (node: Tag, options: IndentOptions) => {
+  if (!clearedValue.includes('\n')) return start + ' ' + clearedValue;
+
+  return (
+    start +
+    '\n' +
+    clearedValue
+      .split('\n')
+      .map(str => `${getIndent({ ...options, level: options.level + 1 })}${str.trim()}`)
+      .join('\n')
+  );
+};
+
+const compileScript = (node: Script, options: CompileOptions) =>
+  `${getIndent(options)}script${wrapAttrs(compileAttrs(node.attrs, options))}${wrapText(
+    node.value ?? '',
+    {
+      ...options,
+      level: options.level + 1,
+    }
+  )}`;
+
+const compileStyle = (node: Style, options: CompileOptions) =>
+  `${getIndent(options)}style${wrapAttrs(compileAttrs(node.attrs, options))}${wrapText(
+    node.value ?? '',
+    {
+      ...options,
+      level: options.level + 1,
+    }
+  )}`;
+
+const compileTag = (node: Tag, options: CompileOptions) => {
   const { attrs, className, id } = formatAttrsForTag(node.attrs);
   const tag = [
     getIndent(options),
-    id || (className && node.name === 'div') ? '' : node.name,
+    (id || className) && node.name === 'div' ? '' : node.name,
     id ? `#${id}` : '',
     className ? '.' + className.split(' ').join('.') : '',
-    wrapAttrs(compileAttrs(attrs)),
+    wrapAttrs(compileAttrs(attrs, options)),
   ]
     .filter(Boolean)
     .join('');
   const textNode = getFirstText(node.children);
   if (!textNode) return tag;
-  return `${tag}${compileText(textNode, { ...options, level: options.level + 1 })}`;
+  const resultText = textNode.value.includes('\n')
+    ? '\n' + compileText(textNode, { ...options, level: options.level + 1 })
+    : ' ' + compileSingleLineText(textNode, options);
+  return `${tag}${resultText}`;
 };
 
-export function compileAst(ast: readonly Nodes[], { symbol }: ConvertOptions): string {
+export function compileAst(ast: readonly Nodes[], options: ConvertOptions): string {
   const deepCompile = (ast: readonly Nodes[], level = 0) =>
     ast.reduce<readonly string[]>((acc, node) => {
+      const newOptions = { level, ...options };
       switch (node.node) {
         case Node.Doctype:
-          return acc.concat(compileDoctype(node, { level, symbol }));
+          return acc.concat(compileDoctype(node, newOptions));
         case Node.Script:
-          return acc.concat(compileScript(node, { level, symbol }));
+          return acc.concat(compileScript(node, newOptions));
         case Node.Style:
-          return acc.concat(compileStyle(node, { level, symbol }));
+          return acc.concat(compileStyle(node, newOptions));
         case Node.Text:
-          return acc.concat(compileText(node, { level, symbol }));
+          return acc.concat(compileText(node, newOptions));
+        case Node.Comment:
+          return acc.concat(compileComment(node, newOptions));
         case Node.Tag:
           return acc.concat(
-            compileTag(node, { level, symbol }),
+            compileTag(node, newOptions),
             ...deepCompile(getNodesWithoutText(node.children), level + 1)
           );
       }
     }, []);
 
-  return deepCompile(ast).join('\n');
+  return deepCompile(ast).join('\n') + '\n';
 }
