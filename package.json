@@ -41,6 +41,8 @@
     "node": ">=10"
   },
   "dependencies": {
+    "benny": "^3.6.15",
+    "html2jade": "^0.8.6",
     "hyntax": "^1.1.9"
   },
   "devDependencies": {

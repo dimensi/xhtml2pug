@@ -18,7 +18,7 @@ const setupDefaultOptions = (options: Partial<ConvertOptions>): ConvertOptions =
   ...options
 })
 
-export async function convert(html: string, options?: Partial<ConvertOptions>) {
+export function convert(html: string, options?: Partial<ConvertOptions>) {
   const definedOptions = setupDefaultOptions(options)
   const ast = buildAst(html)
   const convertedAst = convertAst(ast, definedOptions)
