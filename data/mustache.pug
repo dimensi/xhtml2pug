@@ -1,6 +1,6 @@
 html
   body
     #mustacheTestcases
-      #div1.panel-body(class='{{listTypeClass}}') Test
-      .note.checklist-part(class='indent-{{indent}}')
+      #div1(class='panel-body {{listTypeClass}}') Test
+      div(class='note checklist-part indent-{{indent}}')
       textarea.note-text(id='{{id}}') {{text}}

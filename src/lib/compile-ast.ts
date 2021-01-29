@@ -17,20 +17,21 @@ import {
 
 const wrapAttrs = (str?: string) => (str ? `(${str})` : '');
 
-const formatAttrsForTag = (attrs: readonly Attr[]) =>
+const allowValue = (str: string) => !/[{}_]/.test(str)
+const formatAttrsForTag = (attrs: readonly Attr[], options: CompileOptions) =>
   attrs.reduce<{
     readonly className: string;
     readonly id: string;
     readonly attrs: readonly Attr[];
   }>(
     (acc, { key, value }) => {
-      if (key === 'id') {
+      if (key === 'id' && allowValue(value)) {
         return {
           ...acc,
           id: value,
         };
       }
-      if (key === 'class') {
+      if (key === 'class' && allowValue(value) && !options.inlineCSS) {
         return {
           ...acc,
           className: value,
@@ -132,7 +133,7 @@ const compileStyle = (node: Style, options: CompileOptions) =>
   )}`;
 
 const compileTag = (node: Tag, options: CompileOptions) => {
-  const { attrs, className, id } = formatAttrsForTag(node.attrs);
+  const { attrs, className, id } = formatAttrsForTag(node.attrs, options);
   const tag = [
     getIndent(options),
     (id || className) && node.name === 'div' ? '' : node.name,

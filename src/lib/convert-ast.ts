@@ -1,16 +1,26 @@
-import { TreeConstructor } from 'hyntax';
+import { TreeConstructor } from 'hyntax'
 
-import { Comment, ConvertOptions, Doctype, Node, Nodes, Script, Style, Tag, Text } from './models';
+import {
+  Comment,
+  ConvertOptions,
+  Doctype,
+  Node,
+  Nodes,
+  Script,
+  Style,
+  Tag,
+  Text
+} from './models'
 
-import AnyNode = TreeConstructor.AnyNode;
-import CommentNode = TreeConstructor.CommentNode;
-import DoctypeNode = TreeConstructor.DoctypeNode;
-import DocumentNode = TreeConstructor.DocumentNode;
-import ScriptNode = TreeConstructor.ScriptNode;
-import StyleNode = TreeConstructor.StyleNode;
-import TagAttribute = TreeConstructor.TagAttribute;
-import TagNode = TreeConstructor.TagNode;
-import TextNode = TreeConstructor.TextNode;
+import AnyNode = TreeConstructor.AnyNode
+import CommentNode = TreeConstructor.CommentNode
+import DoctypeNode = TreeConstructor.DoctypeNode
+import DocumentNode = TreeConstructor.DocumentNode
+import ScriptNode = TreeConstructor.ScriptNode
+import StyleNode = TreeConstructor.StyleNode
+import TagAttribute = TreeConstructor.TagAttribute
+import TagNode = TreeConstructor.TagNode
+import TextNode = TreeConstructor.TextNode
 
 const isTag = (child: AnyNode): child is TagNode => child.nodeType === 'tag';
 const isDoctype = (child: AnyNode): child is DoctypeNode => child.nodeType === 'doctype';
@@ -78,12 +88,30 @@ const findTag = (nodes: readonly Nodes[], tagName: string) => {
   });
 };
 
-const wrapIntoTag = (nodes: readonly Nodes[], tagName: string) => {
-  const tag = findTag(nodes, tagName);
-  if (!tag) {
-    return [{ node: Node.Tag, name: tagName, children: nodes, attrs: [] }] as readonly Nodes[];
+const createTag = (name: string, children: readonly Nodes[]) => (
+  ({ node: Node.Tag, name, children, attrs: [] }) as Nodes
+)
+
+const wrapIntoBase = (nodes: readonly Nodes[]): readonly Nodes[] => {
+  const html = findTag(nodes, 'html')
+  const body = findTag(nodes, 'body')
+  const head = findTag(nodes, 'head')
+
+  if (html) return nodes
+
+  if (!html || (!body && !head)) {
+    return [createTag('html', [createTag('body', nodes)])]
   }
-  return nodes;
+
+  if (!body && head) {
+    return [createTag('html', [head])]
+  }
+
+  if (body && !head) {
+    return [createTag('html', [body])]
+  }
+
+  return [createTag('html', [head, body])]
 };
 
 export function convertAst(ast: DocumentNode, { bodyLess }: ConvertOptions): readonly Nodes[] {
@@ -117,5 +145,8 @@ export function convertAst(ast: DocumentNode, { bodyLess }: ConvertOptions): rea
     }, []);
 
   const nodes = deepConvert(ast.content.children);
-  return bodyLess ? nodes : wrapIntoTag(wrapIntoTag(nodes, 'body'), 'html');
+
+  if (bodyLess) return nodes
+
+  return wrapIntoBase(nodes)
 }

@@ -11,10 +11,10 @@ function generateTests() {
 
   const inputFiles = fs.readdirSync(dir)
 
-  const index = 8
+  const index = 16
   inputFiles
     .filter(file => file.includes('.html'))
-    .slice(0, index + 1)
+    .slice(index, index + 1)
     .forEach((inputFile) => {
       const htmlPath = path.join(dir, inputFile)
       const pugPath = path.join(dir, inputFile.replace('.html', '.pug'))
@@ -22,8 +22,16 @@ function generateTests() {
       test(`should convert ${path.basename(pugPath)} to output matching ${inputFile}`, (t) => {
         const html = fs.readFileSync(htmlPath, 'utf-8')
         const pug = fs.readFileSync(pugPath, 'utf-8')
-        console.log(convert(html))
-        t.is(convert(html), pug)
+        // eslint-disable-next-line functional/no-let
+        let options
+        try {
+          const optionsPath = path.join(dir, inputFile.replace('.html', '.json'))
+          options = JSON.parse(fs.readFileSync(optionsPath, 'utf-8'))
+        } catch (e) {
+          options = {}
+        }
+        console.log(convert(html, options))
+        t.is(convert(html, options), pug)
       })
   })
 }
