@@ -1,4 +1,14 @@
-import { Attr, Doctype, Node, Nodes, Script, Style, Tag, Text } from './models';
+import {
+  Attr,
+  ConvertOptions,
+  Doctype,
+  Node,
+  Nodes,
+  Script,
+  Style,
+  Tag,
+  Text
+} from './models'
 
 const wrapAttrs = (str?: string) => (str ? `(${str})` : '');
 
@@ -103,8 +113,8 @@ const compileTag = (node: Tag, options: IndentOptions) => {
   return `${tag}${compileText(textNode, { ...options, level: options.level + 1 })}`;
 };
 
-export function compileAst(ast: readonly Nodes[]): string {
-  const symbol = '  ';
+export function compileAst(ast: readonly Nodes[], { symbol }: ConvertOptions): string {
+
   const deepCompile = (ast: readonly Nodes[], level = 0) =>
     ast.reduce<readonly string[]>((acc, node) => {
       switch (node.node) {

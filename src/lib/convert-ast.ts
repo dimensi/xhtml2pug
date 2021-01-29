@@ -1,6 +1,15 @@
 import { TreeConstructor } from 'hyntax'
 
-import { Doctype, Node, Nodes, Script, Style, Tag, Text } from './models'
+import {
+  ConvertOptions,
+  Doctype,
+  Node,
+  Nodes,
+  Script,
+  Style,
+  Tag,
+  Text
+} from './models'
 
 import AnyNode = TreeConstructor.AnyNode
 import DoctypeNode = TreeConstructor.DoctypeNode
@@ -53,7 +62,30 @@ const parseTag = (child: TagNode, children: ReadonlyArray<Tag | Text>): Tag => (
   children
 })
 
-export function convertAst(ast: DocumentNode): readonly Nodes[] {
+const findTag = (nodes: readonly Nodes[], tagName: string) => {
+  return nodes.find(node => {
+    if (node.node === Node.Tag && node.name === tagName) {
+      return node
+    }
+
+    if (node.node === Node.Tag && node.children) {
+      return findTag(node.children, tagName)
+    }
+
+    return undefined
+  })
+}
+
+const wrapIntoTag = (nodes: readonly Nodes[], tagName: string) => {
+  const tag = findTag(nodes, tagName)
+  if (!tag) {
+    return [{node: Node.Tag, name: tagName, children: nodes, attrs: []  }] as readonly Nodes[]
+  }
+  return nodes
+}
+
+
+export function convertAst(ast: DocumentNode, { bodyLess }: ConvertOptions): readonly Nodes[] {
   const deepConvert = (children: readonly AnyNode[]) => children.reduce<readonly Nodes[]>((acc, child) => {
     if (isText(child)) {
       const textNode = parseTextNode(child)
@@ -78,5 +110,6 @@ export function convertAst(ast: DocumentNode): readonly Nodes[] {
     return acc
   }, [])
 
-  return deepConvert(ast.content.children)
+  const nodes = deepConvert(ast.content.children)
+  return bodyLess ? nodes : wrapIntoTag(wrapIntoTag(nodes, 'body'), 'html')
 }

@@ -41,3 +41,12 @@ export type Tag = {
 }
 
 export type Nodes = Text | Doctype | Script | Style | Tag
+
+export type ConvertOptions = {
+  readonly bodyLess: boolean,
+  readonly attrComma: boolean,
+  readonly encode: boolean,
+  readonly doubleQuotes: boolean,
+  readonly inlineCSS: boolean
+  readonly symbol: string
+}
