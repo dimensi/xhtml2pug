@@ -35,7 +35,7 @@ const wrapPreformattedText = (str: string, options) =>
       str
         .trim()
         .split('\n')
-        .map(str => getIndent(options) + str.trim())
+        .map(str => getIndent(options) + str.trimStart())
         .join('\n')
     : '';
 
@@ -45,7 +45,7 @@ const compileText = (node: Text, options: CompileOptions) => {
   const resultText = node.value
     .split('\n')
     .filter(Boolean)
-    .map(str => `${getIndent(options)}| ${str}`)
+    .map(str => `${getIndent(options)}| ${str.trimStart()}`)
     .join('\n');
   return options.encode ? encode(resultText) : resultText;
 };
