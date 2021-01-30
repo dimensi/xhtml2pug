@@ -1,6 +1,6 @@
 {
   "name": "xhtml2pug",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "library for convert html2pug",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
