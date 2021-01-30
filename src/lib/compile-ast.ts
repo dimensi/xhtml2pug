@@ -82,21 +82,20 @@ const compileAttrs = (attrs: readonly Attr[], options: CompileOptions) =>
     )
     .join(options.attrSep);
 
-const compileDoctype = (node: Doctype, options: CompileOptions) =>
-  `${getIndent(options)}doctype ${compileAttrs(node.attrs, options)}`;
+const compileDoctype = (_: Doctype, options: CompileOptions) =>
+  `${getIndent(options)}doctype html`;
 
 const compileText = (node: Text, options: CompileOptions) => {
   const resultText = node.value
-    .trim()
     .split('\n')
     .filter(Boolean)
-    .map(str => `${getIndent(options)}| ${str.trim()}`)
+    .map(str => `${getIndent(options)}| ${str}`)
     .join('\n');
   return options.encode ? encode(resultText) : resultText;
 };
 
 const compileSingleLineText = (node: Text, options: CompileOptions) =>
-  options.encode ? encode(node.value.trim()) : node.value.trim();
+  options.encode ? encode(node.value) : node.value;
 
 const compileComment = (node: Comment, options: CompileOptions) => {
   const start = getIndent(options) + '//';
