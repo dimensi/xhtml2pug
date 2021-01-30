@@ -1,7 +1,7 @@
-import { encode } from 'html-entities';
+import { encode } from 'html-entities'
 
+import { compileAttrs, formatAttrsForTag, wrapAttrs } from './compile-attrs'
 import {
-  Attr,
   Comment,
   CompileOptions,
   ConvertOptions,
@@ -12,38 +12,8 @@ import {
   Script,
   Style,
   Tag,
-  Text,
-} from './models';
-
-const wrapAttrs = (str?: string) => (str ? `(${str})` : '');
-
-const allowValue = (str: string) => !/[{}_]/.test(str);
-const formatAttrsForTag = (attrs: readonly Attr[], options: CompileOptions) =>
-  attrs.reduce<{
-    readonly className: string;
-    readonly id: string;
-    readonly attrs: readonly Attr[];
-  }>(
-    (acc, { key, value }) => {
-      if (key === 'id' && allowValue(value)) {
-        return {
-          ...acc,
-          id: value,
-        };
-      }
-      if (key === 'class' && allowValue(value) && !options.inlineCSS) {
-        return {
-          ...acc,
-          className: value,
-        };
-      }
-      return {
-        ...acc,
-        attrs: acc.attrs.concat({ key, value }),
-      };
-    },
-    { className: '', id: '', attrs: [] }
-  );
+  Text
+} from './models'
 
 const getFirstText = (nodes: readonly Nodes[]) => {
   const [textNode] = nodes;
@@ -59,7 +29,7 @@ const getNodesWithoutText = (nodes: readonly Nodes[]) => {
 
 const getIndent = ({ level, symbol }: IndentOptions) => symbol.repeat(level);
 
-const wrapText = (str: string, options) =>
+const wrapPreformattedText = (str: string, options) =>
   str
     ? '.\n' +
       str
@@ -68,21 +38,6 @@ const wrapText = (str: string, options) =>
         .map(str => getIndent(options) + str.trim())
         .join('\n')
     : '';
-
-const wrapInQuotes = (str: string, options: Pick<CompileOptions, 'doubleQuotes'>) => {
-  if (str === undefined) return null;
-  if (options.doubleQuotes && str.includes(`"`)) return `'${str}'`;
-  return str.includes(`'`) ? `"${str}"` : `'${str}'`;
-};
-const keepMultilineAttrValue = (str: string) => str?.replace(/\n/g, '\\\n');
-const compileAttrs = (attrs: readonly Attr[], options: CompileOptions) =>
-  attrs
-    .map(({ key, value }) =>
-      [key, keepMultilineAttrValue(wrapInQuotes(value, options))]
-        .filter(str => str != null)
-        .join('=')
-    )
-    .join(options.attrSep);
 
 const compileDoctype = (_: Doctype, options: CompileOptions) => `${getIndent(options)}doctype html`;
 
@@ -115,7 +70,7 @@ const compileComment = (node: Comment, options: CompileOptions) => {
 };
 
 const compileScript = (node: Script, options: CompileOptions) =>
-  `${getIndent(options)}script${wrapAttrs(compileAttrs(node.attrs, options))}${wrapText(
+  `${getIndent(options)}script${wrapAttrs(compileAttrs(node.attrs, options))}${wrapPreformattedText(
     node.value ?? '',
     {
       ...options,
@@ -124,7 +79,7 @@ const compileScript = (node: Script, options: CompileOptions) =>
   )}`;
 
 const compileStyle = (node: Style, options: CompileOptions) =>
-  `${getIndent(options)}style${wrapAttrs(compileAttrs(node.attrs, options))}${wrapText(
+  `${getIndent(options)}style${wrapAttrs(compileAttrs(node.attrs, options))}${wrapPreformattedText(
     node.value ?? '',
     {
       ...options,
