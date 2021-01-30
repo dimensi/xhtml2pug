@@ -49,9 +49,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "benny": "^3.6.15",
     "html-entities": "^2.1.0",
-    "html2jade": "^0.8.6",
     "hyntax": "^1.1.9"
   },
   "devDependencies": {
@@ -62,6 +60,7 @@
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "ava": "^3.12.1",
+    "benny": "^3.6.15",
     "codecov": "^3.5.0",
     "cspell": "^4.1.0",
     "cz-conventional-changelog": "^3.3.0",
@@ -71,6 +70,7 @@
     "eslint-plugin-functional": "^3.0.2",
     "eslint-plugin-import": "^2.22.0",
     "gh-pages": "^3.1.0",
+    "html2jade": "^0.8.6",
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
     "open-cli": "^6.0.1",
