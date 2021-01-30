@@ -1,6 +1,6 @@
-import { encode } from 'html-entities'
+import { encode } from 'html-entities';
 
-import { compileAttrs, formatAttrsForTag, wrapAttrs } from './compile-attrs'
+import { compileAttrs, formatAttrsForTag, wrapAttrs } from './compile-attrs';
 import {
   Comment,
   CompileOptions,
@@ -12,8 +12,8 @@ import {
   Script,
   Style,
   Tag,
-  Text
-} from './models'
+  Text,
+} from './models';
 
 const getFirstText = (nodes: readonly Nodes[]) => {
   const [textNode] = nodes;
