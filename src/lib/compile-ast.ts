@@ -71,7 +71,7 @@ const compileComment = (node: Comment, options: CompileOptions) => {
 
 const compileScript = (node: Script, options: CompileOptions) =>
   `${getIndent(options)}script${wrapAttrs(compileAttrs(node.attrs, options))}${wrapPreformattedText(
-    node.value ?? '',
+    node.value,
     {
       ...options,
       level: options.level + 1,
@@ -80,7 +80,7 @@ const compileScript = (node: Script, options: CompileOptions) =>
 
 const compileStyle = (node: Style, options: CompileOptions) =>
   `${getIndent(options)}style${wrapAttrs(compileAttrs(node.attrs, options))}${wrapPreformattedText(
-    node.value ?? '',
+    node.value,
     {
       ...options,
       level: options.level + 1,

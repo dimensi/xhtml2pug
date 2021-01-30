@@ -25,13 +25,13 @@ export type Doctype = {
 export type Script = {
   readonly node: Node.Script;
   readonly attrs: readonly Attr[];
-  readonly value?: string;
+  readonly value: string;
 };
 
 export type Style = {
   readonly node: Node.Style;
   readonly attrs: readonly Attr[];
-  readonly value?: string;
+  readonly value: string;
 };
 
 export type Comment = {
