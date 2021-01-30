@@ -1,1 +1,1 @@
-export { convert } from './lib/convert'
+export { convert } from './lib/convert';

@@ -17,7 +17,7 @@ import {
 
 const wrapAttrs = (str?: string) => (str ? `(${str})` : '');
 
-const allowValue = (str: string) => !/[{}_]/.test(str)
+const allowValue = (str: string) => !/[{}_]/.test(str);
 const formatAttrsForTag = (attrs: readonly Attr[], options: CompileOptions) =>
   attrs.reduce<{
     readonly className: string;
@@ -78,12 +78,13 @@ const keepMultilineAttrValue = (str: string) => str?.replace(/\n/g, '\\\n');
 const compileAttrs = (attrs: readonly Attr[], options: CompileOptions) =>
   attrs
     .map(({ key, value }) =>
-      [key, keepMultilineAttrValue(wrapInQuotes(value, options))].filter(str => str != null).join('=')
+      [key, keepMultilineAttrValue(wrapInQuotes(value, options))]
+        .filter(str => str != null)
+        .join('=')
     )
     .join(options.attrSep);
 
-const compileDoctype = (_: Doctype, options: CompileOptions) =>
-  `${getIndent(options)}doctype html`;
+const compileDoctype = (_: Doctype, options: CompileOptions) => `${getIndent(options)}doctype html`;
 
 const compileText = (node: Text, options: CompileOptions) => {
   const resultText = node.value

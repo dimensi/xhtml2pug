@@ -1,27 +1,30 @@
-import { constructTree, tokenize } from 'hyntax'
+import { constructTree, tokenize } from 'hyntax';
 
-import { compileAst } from './compile-ast'
-import { convertAst } from './convert-ast'
-import { ConvertOptions, PublicOptions } from './models'
+import { compileAst } from './compile-ast';
+import { convertAst } from './convert-ast';
+import { ConvertOptions, PublicOptions } from './models';
 
 function buildAst(html: string) {
-  return constructTree(tokenize(html).tokens).ast
+  return constructTree(tokenize(html).tokens).ast;
 }
 
-const setupDefaultOptions = ({ attrComma = true, ...options}: Partial<PublicOptions>): ConvertOptions => ({
+const setupDefaultOptions = ({
+  attrComma = true,
+  ...options
+}: Partial<PublicOptions>): ConvertOptions => ({
   attrSep: attrComma ? ', ' : ' ',
   bodyLess: false,
   doubleQuotes: true,
   encode: true,
   inlineCSS: false,
   symbol: '  ',
-  ...options
-})
+  ...options,
+});
 
 export function convert(html: string, options: Partial<PublicOptions> = {}) {
-  const definedOptions = setupDefaultOptions(options)
-  const ast = buildAst(html)
-  const convertedAst = convertAst(ast, definedOptions)
+  const definedOptions = setupDefaultOptions(options);
+  const ast = buildAst(html);
+  const convertedAst = convertAst(ast, definedOptions);
 
-  return compileAst(convertedAst, definedOptions)
+  return compileAst(convertedAst, definedOptions);
 }
