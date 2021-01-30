@@ -5,9 +5,13 @@
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/YOUR_GITHUB_USER_NAME/xhtml2pug",
+  "repository": "https://github.com/dimensi/xhtml2pug",
+  "author": {
+    "email": "eddimensi@gmail.com",
+    "name": "Nikita Nafranets"
+  },
   "license": "MIT",
-  "keywords": [],
+  "keywords": ["html to pug", "html2pug", "convert html to pug"],
   "scripts": {
     "build": "run-p build:*",
     "build:main": "tsc -p tsconfig.json",
