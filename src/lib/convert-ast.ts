@@ -127,10 +127,12 @@ export function convertAst(ast: DocumentNode, { bodyLess }: ConvertOptions): rea
         return acc.concat(parseStyle(child));
       }
 
+      /* istanbul ignore else */
       if (isTag(child)) {
         return acc.concat(parseTag(child, deepConvert(child.content.children ?? [])));
       }
 
+      /* istanbul ignore next */
       return acc;
     }, []);
 
