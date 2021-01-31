@@ -34,6 +34,7 @@ export const formatAttrsForTag = (attrs: readonly Attr[], options: CompileOption
 const wrapInQuotes = (str: string, options: Pick<CompileOptions, 'doubleQuotes'>) => {
   if (str === undefined) return null;
   if (options.doubleQuotes && str.includes(`"`)) return `'${str}'`;
+  if (options.doubleQuotes && !str.includes(`"`)) return `"${str}"`;
   return str.includes(`'`) ? `"${str}"` : `'${str}'`;
 };
 

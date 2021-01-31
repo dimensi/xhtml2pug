@@ -43,6 +43,7 @@ const compileDoctype = (_: Doctype, options: CompileOptions) => `${getIndent(opt
 
 const compileText = (node: Text, options: CompileOptions) => {
   const resultText = node.value
+    .trimRight()
     .split('\n')
     .filter(Boolean)
     .map(str => `${getIndent(options)}| ${str.trimStart()}`)
