@@ -1,4 +1,5 @@
-import { constructTree, tokenize } from 'hyntax';
+import constructTree from 'hyntax/lib/construct-tree';
+import tokenize from 'hyntax/lib/tokenize';
 
 import { compileAst } from './compile-ast';
 import { convertAst } from './convert-ast';
