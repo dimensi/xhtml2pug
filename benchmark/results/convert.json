@@ -1,19 +1,19 @@
 {
   "name": "Convert html 2 pug",
-  "date": "2021-01-30T16:59:59.211Z",
+  "date": "2021-01-31T15:49:07.511Z",
   "version": "1.0.0",
   "results": [
     {
       "name": "my own convert",
       "ops": 41,
-      "margin": 4.55,
+      "margin": 2.43,
       "percentSlower": 0
     },
     {
       "name": "jade convert",
-      "ops": 15,
-      "margin": 2.19,
-      "percentSlower": 63.41
+      "ops": 16,
+      "margin": 2.2,
+      "percentSlower": 60.98
     }
   ],
   "fastest": {
