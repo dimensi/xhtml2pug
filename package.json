@@ -49,6 +49,7 @@
     "node": ">=10"
   },
   "dependencies": {
+    "@vue/compiler-dom": "^3.2.26",
     "html-entities": "^2.1.0",
     "hyntax": "^1.1.9"
   },

@@ -1,12 +1,19 @@
+import { parse } from '@vue/compiler-dom';
 import constructTree from 'hyntax/lib/construct-tree';
 import tokenize from 'hyntax/lib/tokenize';
 
+import { wrapIntoBase } from './ast-helpers';
 import { compileAst } from './compile-ast';
-import { convertAst } from './convert-ast';
-import { ConvertOptions, PublicOptions } from './models';
+import { convertHtmlAst } from './html/convert-ast';
+import { ConvertOptions, Nodes, PublicOptions } from './models';
+import { converVueAst } from './vue/convert-ast';
 
-function buildAst(html: string) {
+function buildHtmlAst(html: string) {
   return constructTree(tokenize(html).tokens).ast;
+}
+
+function buildVueAst(html: string) {
+  return parse(html);
 }
 
 const setupDefaultOptions = ({
@@ -19,13 +26,20 @@ const setupDefaultOptions = ({
   encode: true,
   inlineCSS: false,
   symbol: '  ',
+  parser: 'html',
   ...options,
 });
 
 export function convert(html: string, options: Partial<PublicOptions> = {}) {
   const definedOptions = setupDefaultOptions(options);
-  const ast = buildAst(html);
-  const convertedAst = convertAst(ast, definedOptions);
-
-  return compileAst(convertedAst, definedOptions);
+  // eslint-disable-next-line functional/no-let
+  let convertedAst: readonly Nodes[];
+  if (definedOptions.parser === 'html') {
+    const ast = buildHtmlAst(html);
+    convertedAst = convertHtmlAst(ast);
+  } else {
+    const ast = buildVueAst(html);
+    convertedAst = converVueAst(ast);
+  }
+  return compileAst(options.bodyLess ? convertedAst : wrapIntoBase(convertedAst), definedOptions);
 }
