@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/dimensi/xhtml2pug/compare/v1.1.2...v2.0.0) (2022-01-01)
+
+
+### Features
+
+* add vue parser ([7525f44](https://github.com/dimensi/xhtml2pug/commit/7525f447f9c1770dd71ec9417bd7325beab0b4f3))
+
 ### [1.1.2](https://github.com/dimensi/xhtml2pug/compare/v1.1.1...v1.1.2) (2021-01-31)
 
 ### [1.1.1](https://github.com/dimensi/xhtml2pug/compare/v1.1.0...v1.1.1) (2021-01-31)
