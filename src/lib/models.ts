@@ -55,6 +55,7 @@ export type PublicOptions = {
   readonly doubleQuotes: boolean;
   readonly inlineCSS: boolean;
   readonly symbol: string;
+  readonly parser: 'html' | 'vue';
 };
 
 export type ConvertOptions = {
@@ -64,6 +65,7 @@ export type ConvertOptions = {
   readonly doubleQuotes: boolean;
   readonly inlineCSS: boolean;
   readonly symbol: string;
+  readonly parser: 'html' | 'vue';
 };
 
 export type IndentOptions = {
