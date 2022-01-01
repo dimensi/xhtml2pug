@@ -27,6 +27,7 @@ const setupDefaultOptions = ({
   inlineCSS: false,
   symbol: '  ',
   parser: 'html',
+  classesAtEnd: false,
   ...options,
 });
 

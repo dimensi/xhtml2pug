@@ -90,15 +90,30 @@ const compileStyle = (node: Style, options: CompileOptions) =>
 
 const compileTag = (node: Tag, options: CompileOptions) => {
   const { attrs, className, id } = formatAttrsForTag(node.attrs, options);
-  const tag = [
-    getIndent(options),
-    (id || className) && node.name === 'div' ? '' : node.name,
-    id ? `#${id}` : '',
-    className ? '.' + className.split(' ').join('.') : '',
-    wrapAttrs(compileAttrs(attrs, options)),
-  ]
-    .filter(Boolean)
-    .join('');
+  // eslint-disable-next-line functional/no-let
+  let tag = '';
+  if (options.classesAtEnd) {
+    tag = [
+      getIndent(options),
+      node.name,
+      id ? `#${id}` : '',
+      wrapAttrs(compileAttrs(attrs, options)),
+      className ? '.' + className.split(' ').join('.') : '',
+    ]
+      .filter(Boolean)
+      .join('');
+  } else {
+    tag = [
+      getIndent(options),
+      (id || className) && node.name === 'div' ? '' : node.name,
+      id ? `#${id}` : '',
+      className ? '.' + className.split(' ').join('.') : '',
+      wrapAttrs(compileAttrs(attrs, options)),
+    ]
+      .filter(Boolean)
+      .join('');
+  }
+
   const textNode = getFirstText(node.children);
   if (!textNode) return tag;
   const resultText = textNode.value.includes('\n')

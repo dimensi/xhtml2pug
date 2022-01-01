@@ -56,6 +56,7 @@ export type PublicOptions = {
   readonly inlineCSS: boolean;
   readonly symbol: string;
   readonly parser: 'html' | 'vue';
+  readonly classesAtEnd: boolean;
 };
 
 export type ConvertOptions = {
@@ -66,6 +67,7 @@ export type ConvertOptions = {
   readonly inlineCSS: boolean;
   readonly symbol: string;
   readonly parser: 'html' | 'vue';
+  readonly classesAtEnd: boolean;
 };
 
 export type IndentOptions = {
