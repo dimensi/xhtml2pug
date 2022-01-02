@@ -1,6 +1,15 @@
-import { TreeConstructor } from 'hyntax';
+import { TreeConstructor } from "hyntax";
 
-import { Comment, Doctype, Node, Nodes, Script, Style, Tag, Text } from '../models';
+import {
+  Comment,
+  Doctype,
+  Node,
+  Nodes,
+  Script,
+  Style,
+  Tag,
+  Text,
+} from "../models";
 
 import AnyNode = TreeConstructor.AnyNode;
 import CommentNode = TreeConstructor.CommentNode;
@@ -12,17 +21,21 @@ import TagAttribute = TreeConstructor.TagAttribute;
 import TagNode = TreeConstructor.TagNode;
 import TextNode = TreeConstructor.TextNode;
 
-const isTag = (child: AnyNode): child is TagNode => child.nodeType === 'tag';
-const isDoctype = (child: AnyNode): child is DoctypeNode => child.nodeType === 'doctype';
-const isText = (child: AnyNode): child is TextNode => child.nodeType === 'text';
-const isComment = (child: AnyNode): child is CommentNode => child.nodeType === 'comment';
-const isScript = (child: AnyNode): child is ScriptNode => child.nodeType === 'script';
-const isStyle = (child: AnyNode): child is StyleNode => child.nodeType === 'style';
+const isTag = (child: AnyNode): child is TagNode => child.nodeType === "tag";
+const isDoctype = (child: AnyNode): child is DoctypeNode =>
+  child.nodeType === "doctype";
+const isText = (child: AnyNode): child is TextNode => child.nodeType === "text";
+const isComment = (child: AnyNode): child is CommentNode =>
+  child.nodeType === "comment";
+const isScript = (child: AnyNode): child is ScriptNode =>
+  child.nodeType === "script";
+const isStyle = (child: AnyNode): child is StyleNode =>
+  child.nodeType === "style";
 
-const parseAttrs = (attrs: readonly TagAttribute[] = []) =>
-  attrs.map(attr => {
+const parseAttrs = (attrs: TagAttribute[] = []) =>
+  attrs.map((attr) => {
     if (!attr.key) {
-      return { key: attr.value.content };
+      return { key: attr.value?.content ?? '' };
     }
     return { key: attr.key.content, value: attr.value?.content };
   });
@@ -48,25 +61,28 @@ const parseDoctype = (child: DoctypeNode): Doctype => ({
 const parseScript = (child: ScriptNode): Script => ({
   node: Node.Script,
   attrs: parseAttrs(child.content.attributes),
-  value: child.content.value?.content ?? '',
+  value: child.content.value?.content ?? "",
 });
 
 const parseStyle = (child: StyleNode): Style => ({
   node: Node.Style,
   attrs: parseAttrs(child.content.attributes),
-  value: child.content.value?.content ?? '',
+  value: child.content.value?.content ?? "",
 });
 
-const parseTag = (child: TagNode, children: ReadonlyArray<Tag | Text>): Tag => ({
+const parseTag = (
+  child: TagNode,
+  children: Array<Tag | Text>
+): Tag => ({
   node: Node.Tag,
   attrs: parseAttrs(child.content.attributes),
   name: child.content.name,
   children,
 });
 
-export function convertHtmlAst(ast: DocumentNode): readonly Nodes[] {
-  const deepConvert = (children: readonly AnyNode[]) =>
-    children.reduce<readonly Nodes[]>((acc, child) => {
+export function convertHtmlAst(ast: DocumentNode): Nodes[] {
+  const deepConvert = (children: AnyNode[]): Nodes[] =>
+    children.reduce<Nodes[]>((acc, child) => {
       if (isText(child)) {
         const textNode = parseText(child);
         return textNode ? acc.concat(textNode) : acc;
@@ -90,7 +106,10 @@ export function convertHtmlAst(ast: DocumentNode): readonly Nodes[] {
 
       /* istanbul ignore else */
       if (isTag(child)) {
-        return acc.concat(parseTag(child, deepConvert(child.content.children ?? [])));
+        const children = deepConvert(child.content.children ?? []);
+        return acc.concat(
+          parseTag(child, children as Array<Tag | Text>)
+        );
       }
 
       /* istanbul ignore next */
