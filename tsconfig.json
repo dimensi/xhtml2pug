@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "isolatedModules": true,
     "types": ["node", "jest"],
     "typeRoots": ["node_modules/@types", "lib/typings"]
