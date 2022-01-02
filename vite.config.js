@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require("path")
-const { defineConfig } = require("vite")
+const path = require("path");
+const { defineConfig } = require("vite");
 
 module.exports = defineConfig({
   build: {
@@ -14,7 +14,13 @@ module.exports = defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: ["hyntax", "@vue/compiler-dom", "html-entities"],
+      external: [
+        "hyntax",
+        "@vue/compiler-dom",
+        "html-entities",
+        "hyntax/lib/construct-tree",
+        "hyntax/lib/tokenize",
+      ],
     },
   },
-})
+});
