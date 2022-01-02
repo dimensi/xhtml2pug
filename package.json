@@ -1,6 +1,6 @@
 {
   "name": "xhtml2pug",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "library for convert html2pug",
   "files": [
     "dist"
@@ -29,7 +29,8 @@
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
-    "test": "jest"
+    "test": "jest",
+    "release": "standard-version"
   },
   "devDependencies": {
     "@parcel/config-default": "^2.0.1",
@@ -48,6 +49,7 @@
     "eslint-plugin-promise": "^5.0.0",
     "jest": "^27.4.5",
     "prettier": "^2.5.1",
+    "standard-version": "^9.3.2",
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
