@@ -1,11 +1,11 @@
-export enum Node {
-  Doctype,
-  Tag,
-  Text,
-  Script,
-  Style,
-  Comment,
-}
+export const Node = {
+  Doctype: 0,
+  Tag: 1,
+  Text: 2,
+  Script: 3,
+  Style: 4,
+  Comment: 5,
+} as const;
 
 export interface Attr {
   key: string;
@@ -13,34 +13,34 @@ export interface Attr {
 }
 
 export interface Text {
-  node: Node.Text;
+  node: typeof Node.Text;
   value: string;
 }
 
 export interface Doctype {
-  node: Node.Doctype;
+  node: typeof Node.Doctype;
   attrs: Attr[];
 }
 
 export interface Script {
-  node: Node.Script;
+  node: typeof Node.Script;
   attrs: Attr[];
   value: string;
 }
 
 export interface Style {
-  node: Node.Style;
+  node: typeof Node.Style;
   attrs: Attr[];
   value: string;
 }
 
 export interface Comment {
-  node: Node.Comment;
+  node: typeof Node.Comment;
   value: string;
 }
 
 export interface Tag {
-  node: Node.Tag;
+  node: typeof Node.Tag;
   name: string;
   attrs: Attr[];
   children: Array<Tag | Text>;

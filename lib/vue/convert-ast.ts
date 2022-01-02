@@ -8,16 +8,8 @@ import type {
   TemplateChildNode,
   TextNode,
 } from "@vue/compiler-dom";
-import {
-  Attr,
-  Comment,
-  Node,
-  Nodes,
-  Script,
-  Style,
-  Tag,
-  Text,
-} from "../models";
+import type { Attr, Comment, Nodes, Script, Style, Tag, Text } from "../models";
+import { Node } from "../models";
 
 const NodeTypes = {
   ELEMENT: 1,

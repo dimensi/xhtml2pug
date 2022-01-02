@@ -13,8 +13,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "emitDeclarationOnly": true,
-    "outDir": "./dist"
+    "isolatedModules": true,
+    "types": ["node"]
   },
-  "include": ["lib"]
+  "files": ["./lib/typings/hyntax.d.ts", "./lib/main.ts"]
 }
