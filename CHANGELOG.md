@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/dimensi/xhtml2pug/compare/v2.0.0...v2.1.0) (2022-01-02)
+
+
+### Features
+
+* add classesAtEnd option ([c823ae6](https://github.com/dimensi/xhtml2pug/commit/c823ae65eae6aa3d456da7b9f3205aff2383c990))
+
 ## [2.0.0](https://github.com/dimensi/xhtml2pug/compare/v1.1.2...v2.0.0) (2022-01-01)
 
 
