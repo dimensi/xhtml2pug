@@ -1,6 +1,6 @@
-import { encode } from 'html-entities';
+import { encode } from "html-entities";
 
-import { compileAttrs, formatAttrsForTag, wrapAttrs } from './compile-attrs';
+import { compileAttrs, formatAttrsForTag, wrapAttrs } from "./compile-attrs";
 import {
   Comment,
   CompileOptions,
@@ -13,15 +13,15 @@ import {
   Style,
   Tag,
   Text,
-} from './models';
+} from "./models";
 
-const getFirstText = (nodes: readonly Nodes[]) => {
+const getFirstText = (nodes: Nodes[]) => {
   const [textNode] = nodes;
   if (textNode && textNode.node === Node.Text) return textNode;
   return null;
 };
 
-const getNodesWithoutText = (nodes: readonly Nodes[]) => {
+const getNodesWithoutText = (nodes: Nodes[]) => {
   const [textNode, ...other] = nodes;
   if (textNode && textNode.node === Node.Text) return other;
   return nodes;
@@ -29,25 +29,26 @@ const getNodesWithoutText = (nodes: readonly Nodes[]) => {
 
 const getIndent = ({ level, symbol }: IndentOptions) => symbol.repeat(level);
 
-const wrapPreformattedText = (str: string, options) =>
+const wrapPreformattedText = (str: string, options: IndentOptions) =>
   str
-    ? '.\n' +
+    ? ".\n" +
       str
         .trim()
-        .split('\n')
-        .map(str => getIndent(options) + str.trimStart())
-        .join('\n')
-    : '';
+        .split("\n")
+        .map((str) => getIndent(options) + str.trimStart())
+        .join("\n")
+    : "";
 
-const compileDoctype = (_: Doctype, options: CompileOptions) => `${getIndent(options)}doctype html`;
+const compileDoctype = (_: Doctype, options: CompileOptions) =>
+  `${getIndent(options)}doctype html`;
 
 const compileText = (node: Text, options: CompileOptions) => {
   const resultText = node.value
-    .trimRight()
-    .split('\n')
+    .trimEnd()
+    .split("\n")
     .filter(Boolean)
-    .map(str => `${getIndent(options)}| ${str.trimStart()}`)
-    .join('\n');
+    .map((str) => `${getIndent(options)}| ${str.trimStart()}`)
+    .join("\n");
   return options.encode ? encode(resultText) : resultText;
 };
 
@@ -55,76 +56,77 @@ const compileSingleLineText = (node: Text, options: CompileOptions) =>
   options.encode ? encode(node.value) : node.value;
 
 const compileComment = (node: Comment, options: CompileOptions) => {
-  const start = getIndent(options) + '//';
+  const start = getIndent(options) + "//";
   const clearedValue = node.value.trim();
 
-  if (!clearedValue.includes('\n')) return start + ' ' + clearedValue;
+  if (!clearedValue.includes("\n")) return start + " " + clearedValue;
 
   return (
     start +
-    '\n' +
+    "\n" +
     clearedValue
-      .split('\n')
-      .map(str => `${getIndent({ ...options, level: options.level + 1 })}${str.trim()}`)
-      .join('\n')
+      .split("\n")
+      .map(
+        (str) =>
+          `${getIndent({ ...options, level: options.level + 1 })}${str.trim()}`
+      )
+      .join("\n")
   );
 };
 
 const compileScript = (node: Script, options: CompileOptions) =>
-  `${getIndent(options)}script${wrapAttrs(compileAttrs(node.attrs, options))}${wrapPreformattedText(
-    node.value,
-    {
-      ...options,
-      level: options.level + 1,
-    }
-  )}`;
+  `${getIndent(options)}script${wrapAttrs(
+    compileAttrs(node.attrs, options)
+  )}${wrapPreformattedText(node.value, {
+    ...options,
+    level: options.level + 1,
+  })}`;
 
 const compileStyle = (node: Style, options: CompileOptions) =>
-  `${getIndent(options)}style${wrapAttrs(compileAttrs(node.attrs, options))}${wrapPreformattedText(
-    node.value,
-    {
-      ...options,
-      level: options.level + 1,
-    }
-  )}`;
+  `${getIndent(options)}style${wrapAttrs(
+    compileAttrs(node.attrs, options)
+  )}${wrapPreformattedText(node.value, {
+    ...options,
+    level: options.level + 1,
+  })}`;
 
 const compileTag = (node: Tag, options: CompileOptions) => {
   const { attrs, className, id } = formatAttrsForTag(node.attrs, options);
-  // eslint-disable-next-line functional/no-let
-  let tag = '';
+
+  let tag = "";
   if (options.classesAtEnd) {
     tag = [
       getIndent(options),
       node.name,
-      id ? `#${id}` : '',
+      id ? `#${id}` : "",
       wrapAttrs(compileAttrs(attrs, options)),
-      className ? '.' + className.split(' ').join('.') : '',
+      className ? "." + className.split(" ").join(".") : "",
     ]
       .filter(Boolean)
-      .join('');
+      .join("");
   } else {
     tag = [
       getIndent(options),
-      (id || className) && node.name === 'div' ? '' : node.name,
-      id ? `#${id}` : '',
-      className ? '.' + className.split(' ').join('.') : '',
+      (id || className) && node.name === "div" ? "" : node.name,
+      id ? `#${id}` : "",
+      className ? "." + className.split(" ").join(".") : "",
       wrapAttrs(compileAttrs(attrs, options)),
     ]
       .filter(Boolean)
-      .join('');
+      .join("");
   }
 
   const textNode = getFirstText(node.children);
   if (!textNode) return tag;
-  const resultText = textNode.value.includes('\n')
-    ? '\n' + compileText(textNode, { ...options, level: options.level + 1 })
-    : ' ' + compileSingleLineText(textNode, options);
+  const resultText = textNode.value.includes("\n")
+    ? "\n" + compileText(textNode, { ...options, level: options.level + 1 })
+    : " " + compileSingleLineText(textNode, options);
   return `${tag}${resultText}`;
 };
 
-export function compileAst(ast: readonly Nodes[], options: ConvertOptions): string {
-  const deepCompile = (ast: readonly Nodes[], level = 0) =>
-    ast.reduce<readonly string[]>((acc, node) => {
+export function compileAst(ast: Nodes[], options: ConvertOptions): string {
+  const deepCompile = (ast: Nodes[], level = 0): string[] =>
+    ast.reduce<string[]>((acc, node) => {
       const newOptions = { level, ...options };
       switch (node.node) {
         case Node.Doctype:
@@ -142,8 +144,10 @@ export function compileAst(ast: readonly Nodes[], options: ConvertOptions): stri
             compileTag(node, newOptions),
             ...deepCompile(getNodesWithoutText(node.children), level + 1)
           );
+        default:
+          return acc;
       }
     }, []);
 
-  return deepCompile(ast).join('\n') + '\n';
+  return deepCompile(ast).join("\n") + "\n";
 }
