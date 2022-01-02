@@ -1,4 +1,6 @@
 import { TreeConstructor } from "hyntax";
+import constructTree from "hyntax/lib/construct-tree";
+import tokenize from "hyntax/lib/tokenize";
 
 import {
   Comment,
@@ -14,7 +16,6 @@ import {
 import AnyNode = TreeConstructor.AnyNode;
 import CommentNode = TreeConstructor.CommentNode;
 import DoctypeNode = TreeConstructor.DoctypeNode;
-import DocumentNode = TreeConstructor.DocumentNode;
 import ScriptNode = TreeConstructor.ScriptNode;
 import StyleNode = TreeConstructor.StyleNode;
 import TagAttribute = TreeConstructor.TagAttribute;
@@ -77,7 +78,7 @@ const parseTag = (child: TagNode, children: Array<Tag | Text>): Tag => ({
   children,
 });
 
-export function convertHtmlAst(ast: DocumentNode): Nodes[] {
+export function convertHtmlAst(ast: any): Nodes[] {
   const deepConvert = (children: AnyNode[]): Nodes[] =>
     children.reduce<Nodes[]>((acc, child) => {
       if (isText(child)) {
@@ -114,4 +115,8 @@ export function convertHtmlAst(ast: DocumentNode): Nodes[] {
   const nodes = deepConvert(ast.content.children);
 
   return nodes;
+}
+
+export function buildHtmlAst(html: string) {
+  return convertHtmlAst(constructTree(tokenize(html).tokens).ast);
 }

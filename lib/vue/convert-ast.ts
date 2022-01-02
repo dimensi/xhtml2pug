@@ -8,6 +8,8 @@ import type {
   TemplateChildNode,
   TextNode,
 } from "@vue/compiler-dom";
+import { parse } from "@vue/compiler-dom";
+
 import type { Attr, Comment, Nodes, Script, Style, Tag, Text } from "../models";
 import { Node } from "../models";
 
@@ -117,4 +119,8 @@ export function converVueAst(ast: RootNode): Nodes[] {
     }, []);
 
   return deepConvert(ast.children);
+}
+
+export function buildVueAst(html: string) {
+  return converVueAst(parse(html));
 }
