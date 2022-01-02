@@ -10,5 +10,6 @@ module.exports = defineConfig({
       name: "xhtml2pug",
       fileName: (format) => `main.${format}.js`,
     },
+    sourcemap: true,
   },
 })
