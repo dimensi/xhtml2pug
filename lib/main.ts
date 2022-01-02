@@ -5,7 +5,8 @@ import tokenize from "hyntax/lib/tokenize";
 import { wrapIntoBase } from "./ast-helpers";
 import { compileAst } from "./compile-ast";
 import { convertHtmlAst } from "./html/convert-ast";
-import { ConvertOptions, Nodes, PublicOptions } from "./models";
+import type { ConvertOptions, PublicOptions } from "./models";
+import { Nodes } from "./models";
 import { converVueAst } from "./vue/convert-ast";
 
 function buildHtmlAst(html: string) {

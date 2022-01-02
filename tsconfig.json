@@ -14,7 +14,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "isolatedModules": true,
-    "types": ["node"]
-  },
-  "files": ["./lib/typings/hyntax.d.ts", "./lib/main.ts"]
+    "types": ["node", "jest"],
+    "typeRoots": ["node_modules/@types", "lib/typings"]
+  }
 }
