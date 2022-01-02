@@ -4,10 +4,7 @@ export const wrapAttrs = (str?: string) => (str ? `(${str})` : "");
 
 const allowValue = (str: string) => !/[{}_]/.test(str);
 
-export const formatAttrsForTag = (
-  attrs: Attr[],
-  options: CompileOptions
-) =>
+export const formatAttrsForTag = (attrs: Attr[], options: CompileOptions) =>
   attrs.reduce<{
     className: string;
     id: string;
@@ -44,7 +41,8 @@ const wrapInQuotes = (
   return `'${str}'`;
 };
 
-const keepMultilineAttrValue = (str: string | null) => str?.replace(/\n/g, "\\\n");
+const keepMultilineAttrValue = (str: string | null) =>
+  str?.replace(/\n/g, "\\\n");
 
 export const compileAttrs = (attrs: Attr[], options: CompileOptions) =>
   attrs

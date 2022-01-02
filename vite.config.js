@@ -11,5 +11,10 @@ module.exports = defineConfig({
       fileName: (format) => `main.${format}.js`,
     },
     sourcemap: true,
+    rollupOptions: {
+      // make sure to externalize deps that shouldn't be bundled
+      // into your library
+      external: ["hyntax", "@vue/compiler-dom", "html-entities"],
+    },
   },
 })

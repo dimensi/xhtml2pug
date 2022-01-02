@@ -9,8 +9,8 @@ const findTag = (nodes: Nodes[], tagName: string): Tag | undefined => {
     if (node.node === Node.Tag && node.children) {
       return findTag(node.children, tagName);
     }
-    return undefined
-  }) as Tag | undefined
+    return undefined;
+  }) as Tag | undefined;
 };
 
 const createTag = (name: string, children: Nodes[]) =>

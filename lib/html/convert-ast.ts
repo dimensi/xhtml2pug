@@ -35,7 +35,7 @@ const isStyle = (child: AnyNode): child is StyleNode =>
 const parseAttrs = (attrs: TagAttribute[] = []) =>
   attrs.map((attr) => {
     if (!attr.key) {
-      return { key: attr.value?.content ?? '' };
+      return { key: attr.value?.content ?? "" };
     }
     return { key: attr.key.content, value: attr.value?.content };
   });
@@ -70,10 +70,7 @@ const parseStyle = (child: StyleNode): Style => ({
   value: child.content.value?.content ?? "",
 });
 
-const parseTag = (
-  child: TagNode,
-  children: Array<Tag | Text>
-): Tag => ({
+const parseTag = (child: TagNode, children: Array<Tag | Text>): Tag => ({
   node: Node.Tag,
   attrs: parseAttrs(child.content.attributes),
   name: child.content.name,
@@ -107,9 +104,7 @@ export function convertHtmlAst(ast: DocumentNode): Nodes[] {
       /* istanbul ignore else */
       if (isTag(child)) {
         const children = deepConvert(child.content.children ?? []);
-        return acc.concat(
-          parseTag(child, children as Array<Tag | Text>)
-        );
+        return acc.concat(parseTag(child, children as Array<Tag | Text>));
       }
 
       /* istanbul ignore next */

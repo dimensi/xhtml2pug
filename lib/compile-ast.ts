@@ -124,10 +124,7 @@ const compileTag = (node: Tag, options: CompileOptions) => {
   return `${tag}${resultText}`;
 };
 
-export function compileAst(
-  ast: Nodes[],
-  options: ConvertOptions
-): string {
+export function compileAst(ast: Nodes[], options: ConvertOptions): string {
   const deepCompile = (ast: Nodes[], level = 0): string[] =>
     ast.reduce<string[]>((acc, node) => {
       const newOptions = { level, ...options };

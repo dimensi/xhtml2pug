@@ -7,8 +7,17 @@ import type {
   RootNode,
   TemplateChildNode,
   TextNode,
-} from "@vue/compiler-dom"
-import { Attr, Comment, Node, Nodes, Script, Style, Tag, Text } from "../models"
+} from "@vue/compiler-dom";
+import {
+  Attr,
+  Comment,
+  Node,
+  Nodes,
+  Script,
+  Style,
+  Tag,
+  Text,
+} from "../models";
 
 const NodeTypes = {
   ELEMENT: 1,
@@ -16,39 +25,39 @@ const NodeTypes = {
   COMMENT: 3,
   ATTRIBUTE: 6,
   INTERPOLATION: 5,
-}
+};
 
 const isElement = (child: TemplateChildNode): child is PlainElementNode =>
-  child.type === NodeTypes.ELEMENT
+  child.type === NodeTypes.ELEMENT;
 const isText = (child: TemplateChildNode): child is TextNode =>
-  child.type === NodeTypes.TEXT
+  child.type === NodeTypes.TEXT;
 const isComment = (child: TemplateChildNode): child is CommentNode =>
-  child.type === NodeTypes.COMMENT
+  child.type === NodeTypes.COMMENT;
 const isAttr = (attr: AttributeNode | DirectiveNode): attr is AttributeNode =>
-  attr.type === NodeTypes.ATTRIBUTE
+  attr.type === NodeTypes.ATTRIBUTE;
 const isInterpolation = (
   child: TemplateChildNode
-): child is InterpolationNode => child.type === NodeTypes.INTERPOLATION
+): child is InterpolationNode => child.type === NodeTypes.INTERPOLATION;
 
 export const parseAttrs = (
   attrs: Array<AttributeNode | DirectiveNode>
 ): Attr[] =>
   attrs.map((attr) => {
     if (isAttr(attr)) {
-      return { key: attr.name, value: attr.value?.content }
+      return { key: attr.name, value: attr.value?.content };
     }
 
-    return { key: attr.loc.source }
-  })
+    return { key: attr.loc.source };
+  });
 
 export const parseText = (child: TextNode): Text => ({
   node: Node.Text,
   value: child.content.trim(),
-})
+});
 export const parseComment = (child: CommentNode): Comment => ({
   node: Node.Comment,
   value: child.content.trim(),
-})
+});
 export const parseTag = (
   child: PlainElementNode,
   children: Array<Tag | Text>
@@ -57,7 +66,7 @@ export const parseTag = (
   name: child.tag,
   attrs: parseAttrs(child.props),
   children,
-})
+});
 
 const parseScript = (child: PlainElementNode): Script => ({
   node: Node.Script,
@@ -66,7 +75,7 @@ const parseScript = (child: PlainElementNode): Script => ({
     .map((el) => (el as TextNode).content)
     .join("\n")
     .trim(),
-})
+});
 
 const parseStyle = (child: PlainElementNode): Style => ({
   node: Node.Style,
@@ -75,45 +84,45 @@ const parseStyle = (child: PlainElementNode): Style => ({
     .map((el) => (el as TextNode).content)
     .join("\n")
     .trim(),
-})
+});
 
 const parseInterpolation = (child: InterpolationNode): Text => ({
   node: Node.Text,
   value: child.loc.source,
-})
+});
 
 export function converVueAst(ast: RootNode): Nodes[] {
   const deepConvert = (children: TemplateChildNode[]): Nodes[] =>
     children.reduce<Nodes[]>((acc, child) => {
       if (isText(child)) {
-        return acc.concat(parseText(child))
+        return acc.concat(parseText(child));
       }
 
       if (isInterpolation(child)) {
-        return acc.concat(parseInterpolation(child))
+        return acc.concat(parseInterpolation(child));
       }
 
       if (isComment(child)) {
-        return acc.concat(parseComment(child))
+        return acc.concat(parseComment(child));
       }
 
       if (isElement(child) && child.tag === "script") {
-        return acc.concat(parseScript(child))
+        return acc.concat(parseScript(child));
       }
 
       if (isElement(child) && child.tag === "style") {
-        return acc.concat(parseStyle(child))
+        return acc.concat(parseStyle(child));
       }
 
       /* istanbul ignore else */
       if (isElement(child)) {
-        const children = deepConvert(child.children)
-        return acc.concat(parseTag(child, children as Array<Tag | Text>))
+        const children = deepConvert(child.children);
+        return acc.concat(parseTag(child, children as Array<Tag | Text>));
       }
 
-      console.error(child)
-      return acc
-    }, [])
+      console.error(child);
+      return acc;
+    }, []);
 
-  return deepConvert(ast.children)
+  return deepConvert(ast.children);
 }
