@@ -1,3 +1,3 @@
 # xhtml2pug
 
-library for convert html2pug
+Library for converting html to pug
