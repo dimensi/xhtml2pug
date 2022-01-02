@@ -1,16 +1,17 @@
 {
   "name": "xhtml2pug-2",
-  "version": "2.1.0",
+  "version": "2.1.1-0",
   "description": "library for convert html2pug",
   "files": [
     "dist"
   ],
-  "main": "./dist/index.cjs.js",
-  "module": "./dist/index.es.js",
+  "main": "./dist/main.cjs.js",
+  "module": "./dist/main.es.js",
+  "types": "./dist/main.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js"
+      "import": "./dist/main.es.js",
+      "require": "./dist/main.cjs.js"
     }
   },
   "repository": "https://github.com/dimensi/xhtml2pug",
@@ -26,7 +27,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && tsc",
     "preview": "vite preview",
     "test": "jest"
   },
