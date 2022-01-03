@@ -67,7 +67,7 @@ See `xhtml2pug --help` for more information.
 import { convert } from "xhtml2pug";
 
 const html = '<header><h1 class="title">Hello World!</h1></header>';
-const pug = html2pug(html, { tabs: true });
+const pug = convert(html, { symbol: '\t' });
 ```
 
 ### Cli Options
