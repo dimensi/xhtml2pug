@@ -3,8 +3,12 @@
   "version": "3.1.0",
   "description": "library for convert html2pug",
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
+  "bin": {
+    "xhtml2pug": "bin/xhtml2pug"
+  },
   "source": "./lib/main.ts",
   "main": "./dist/main.js",
   "module": "./dist/module.js",
@@ -57,8 +61,10 @@
   },
   "dependencies": {
     "@vue/compiler-dom": "3.2.26",
+    "get-stdin": "^9.0.0",
     "html-entities": "2.3.2",
     "hyntax": "1.1.9",
-    "parcel": "^2.0.1"
+    "parcel": "^2.0.1",
+    "yargs": "^17.3.1"
   }
 }
