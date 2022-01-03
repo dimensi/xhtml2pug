@@ -3,17 +3,105 @@
 
 const { hideBin } = require("yargs/helpers");
 const { convert } = require("../dist/main");
-const { version } = require("../package.json");
 
-const argv = require("yargs")(hideBin(process.argv))
-  .scriptName("xhtml2pug")
-  .usage("$0 [args] < [file]")
-  .boolean("bodyLess")
-  .help().argv;
+async function init() {
+  const yargs = require("yargs")(hideBin(process.argv))
+    .scriptName("xhtml2pug")
+    .usage("$0 [args] < [file]", "converts HTML to Pug")
+    .option("bodyLess", {
+      alias: "b",
+      default: false,
+      desc: "Don't wrap into html > body",
+      type: "boolean",
+    })
+    .option("tabs", {
+      alias: "t",
+      default: false,
+      desc: "Use tabs as indent",
+      type: "boolean",
+    })
+    .option("spaces", {
+      alias: "s",
+      default: 2,
+      desc: "Number of spaces for indent",
+      type: "number",
+    })
+    .option("attrComma", {
+      alias: "a",
+      default: false,
+      desc: "Commas in attributes",
+      type: "boolean",
+    })
+    .option("encode", {
+      alias: "e",
+      default: true,
+      desc: "Encode html characters",
+      type: "boolean",
+    })
+    .option("doubleQuotes", {
+      alias: "q",
+      default: false,
+      desc: "Use double quotes for attributes",
+      type: "boolean",
+    })
+    .option("inlineCSS", {
+      alias: "i",
+      default: false,
+      desc: "Place all classes in class attribute",
+      type: "boolean",
+    })
+    .option("classesAtEnd", {
+      alias: "c",
+      default: false,
+      desc: "Place all classes after attributes",
+      type: "boolean",
+    })
+    .option("parser", {
+      alias: "p",
+      default: "html",
+      choices: ["html", "vue"],
+      type: "string",
+      desc: "html for any standard html, vue for any vue-like html",
+    })
+    .command("$0")
+    .example("$0 -s 4 < index.html", "write to stdout")
+    .example("$0 -s 4 < index.html > index.pug", "write to file")
+    .example("$0 -p vue < component.html", "write to stdout and parse as vue");
 
-async function init(argv) {
   const { default: getStdin } = await import("get-stdin");
-  console.log(argv);
+  const html = await getStdin();
+  if (!html) {
+    yargs.showHelp();
+    return;
+  }
+  const {
+    attrComma,
+    bodyLess,
+    classesAtEnd,
+    doubleQuotes,
+    encode,
+    inlineCSS,
+    parser,
+    spaces,
+    tabs,
+  } = yargs.argv;
+  const options = {
+    attrComma,
+    bodyLess,
+    encode,
+    doubleQuotes,
+    inlineCSS,
+    symbol: tabs ? "\t" : " ".repeat(spaces),
+    parser,
+    classesAtEnd,
+  };
+
+  try {
+    const result = convert(html, options);
+    console.log(result);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-init(argv);
+init();
