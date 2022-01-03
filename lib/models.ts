@@ -49,13 +49,21 @@ export interface Tag {
 export type Nodes = Text | Doctype | Script | Style | Tag | Comment;
 
 export interface PublicOptions {
+  /** Don't wrap into html > body */
   bodyLess: boolean;
+  /** Commas in attributes */
   attrComma: boolean;
+  /**  Encode html characters */
   encode: boolean;
+  /** Use double quotes for attributes */
   doubleQuotes: boolean;
+  /** Place all classes in class attribute */
   inlineCSS: boolean;
+  /** Symbol for indents, can be anything */
   symbol: string;
+  /** Html for any standard html, vue for any vue-like html */
   parser: "html" | "vue";
+  /** Place all classes after attributes */
   classesAtEnd: boolean;
 }
 
