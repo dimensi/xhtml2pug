@@ -74,10 +74,10 @@ const pug = html2pug(html, { tabs: true });
 
 ```bash
   -b, --bodyLess      Don't wrap into html > body
-                                           [boolean] [required] [default: false]
+                                           [boolean] [default: false]
   -t, --tabs          Use tabs as indent              [boolean] [default: false]
   -s, --spaces        Number of spaces for indent          [number] [default: 2]
-  -a, --attrComma     Commas in attributes [boolean] [required] [default: false]
+  -a, --attrComma     Commas in attributes [boolean] [default: false]
   -e, --encode        Encode html characters           [boolean] [default: true]
   -q, --doubleQuotes  Use double quotes for attributes[boolean] [default: false]
   -i, --inlineCSS     Place all classes in class attribute
