@@ -3,8 +3,12 @@
   "version": "3.1.0",
   "description": "library for convert html2pug",
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
+  "bin": {
+    "xhtml2pug": "bin/xhtml2pug"
+  },
   "source": "./lib/main.ts",
   "main": "./dist/main.js",
   "module": "./dist/module.js",
