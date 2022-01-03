@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+const { hideBin } = require("yargs/helpers");
+const { convert } = require("../dist/main");
+const { version } = require("../package.json");
+
+const argv = require("yargs")(hideBin(process.argv))
+  .scriptName("xhtml2pug")
+  .usage("$0 [args] < [file]")
+  .boolean("bodyLess")
+  .help().argv;
+
+async function init(argv) {
+  const { default: getStdin } = await import("get-stdin");
+  console.log(argv);
+}
+
+init(argv);
