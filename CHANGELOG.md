@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/dimensi/xhtml2pug/compare/v3.2.0...v3.2.1) (2022-01-03)
+
+
+### Features
+
+* **package:** move parcel to devdeps ([a915f9b](https://github.com/dimensi/xhtml2pug/commit/a915f9b0a205d18143a70750b32fa629950554b1))
+
 ## [3.2.0](https://github.com/dimensi/xhtml2pug/compare/v3.0.0...v3.2.0) (2022-01-03)
 
 
