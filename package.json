@@ -53,6 +53,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.0.0",
     "jest": "^27.4.5",
+    "parcel": "^2.0.1",
     "prettier": "^2.5.1",
     "standard-version": "^9.3.2",
     "ts-jest": "^27.1.2",
@@ -64,7 +65,6 @@
     "get-stdin": "^9.0.0",
     "html-entities": "2.3.2",
     "hyntax": "1.1.9",
-    "parcel": "^2.0.1",
     "yargs": "^17.3.1"
   }
 }
