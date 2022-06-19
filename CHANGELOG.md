@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.2](https://github.com/dimensi/xhtml2pug/compare/v4.0.1...v4.0.2) (2022-06-19)
+
+
+### Bug Fixes
+
+* improve parse directive logic ([432747c](https://github.com/dimensi/xhtml2pug/commit/432747c04b672f9d63693b6b1fa460541f83e7d0))
+
 ## [4.0.1](https://github.com/dimensi/xhtml2pug/compare/v4.0.0...v4.0.1) (2022-06-19)
 
 

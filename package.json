@@ -1,6 +1,6 @@
 {
   "name": "xhtml2pug",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "library for convert html2pug",
   "files": [
     "dist",
