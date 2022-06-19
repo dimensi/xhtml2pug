@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/dimensi/xhtml2pug/compare/v3.3.0...v4.0.0) (2022-06-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* update multiline attributes compile logic
+
+### Features
+
+* update multiline attributes compile logic ([ed5d116](https://github.com/dimensi/xhtml2pug/commit/ed5d116181725b8875cea0f686a3a3de2d3ea6f2))
+
+
+### Bug Fixes
+
+* add release-please ([3f03e9a](https://github.com/dimensi/xhtml2pug/commit/3f03e9a04012f8bc58ea1cd0e50c312b1534133a))
+
 ## [3.3.0](https://github.com/dimensi/xhtml2pug/compare/v3.2.1...v3.3.0) (2022-06-19)
 
 
