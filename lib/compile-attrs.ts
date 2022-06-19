@@ -36,18 +36,16 @@ const wrapInQuotes = (
   options: Pick<CompileOptions, "doubleQuotes">
 ) => {
   if (str === undefined) return null;
+  if (/\n/.test(str)) return `\`${str}\``;
   if (options.doubleQuotes && str.includes(`"`)) return `'${str}'`;
   if (options.doubleQuotes && !str.includes(`"`)) return `"${str}"`;
   return `'${str}'`;
 };
 
-const keepMultilineAttrValue = (str: string | null) =>
-  str?.replace(/\n/g, "\\\n");
-
 export const compileAttrs = (attrs: Attr[], options: CompileOptions) =>
   attrs
     .map(({ key, value }) =>
-      [key, value && keepMultilineAttrValue(wrapInQuotes(value, options))]
+      [key, value && wrapInQuotes(value, options)]
         .filter((str) => str != null)
         .join("=")
     )
