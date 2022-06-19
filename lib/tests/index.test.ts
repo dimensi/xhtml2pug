@@ -3,7 +3,7 @@ import path from "path";
 
 import { convert } from "../main";
 
-const vueOnly = ["vue.html"];
+const vueOnly = ["vue.html", "attr-multiline2.html"];
 const htmlOnly = [
   "conditional2.html",
   "conditional3.html",

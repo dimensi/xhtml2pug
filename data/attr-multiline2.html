@@ -1,0 +1,11 @@
+<q-checkbox
+  v-if="who == 3"
+  label="Framework agreement"
+  :value="terms.attributes.frameworkAgreement"
+  @input="
+      (val) => {
+        $set(terms.attributes, 'frameworkAgreement', val)
+      }
+    "
+  :disable="readonly"
+></q-checkbox>

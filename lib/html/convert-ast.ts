@@ -1,4 +1,4 @@
-import { TreeConstructor } from "hyntax";
+import {TreeConstructor} from "hyntax";
 import constructTree from "hyntax/lib/construct-tree";
 import tokenize from "hyntax/lib/tokenize";
 
@@ -12,7 +12,6 @@ import {
   Tag,
   Text,
 } from "../models";
-
 import AnyNode = TreeConstructor.AnyNode;
 import CommentNode = TreeConstructor.CommentNode;
 import DoctypeNode = TreeConstructor.DoctypeNode;
@@ -112,9 +111,7 @@ export function convertHtmlAst(ast: any): Nodes[] {
       return acc;
     }, []);
 
-  const nodes = deepConvert(ast.content.children);
-
-  return nodes;
+  return deepConvert(ast.content.children);
 }
 
 export function buildHtmlAst(html: string) {

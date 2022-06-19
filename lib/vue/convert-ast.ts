@@ -18,6 +18,7 @@ const NodeTypes = {
   TEXT: 2,
   COMMENT: 3,
   ATTRIBUTE: 6,
+  DIRECTIVE: 7,
   INTERPOLATION: 5,
 };
 
@@ -29,6 +30,9 @@ const isComment = (child: TemplateChildNode): child is CommentNode =>
   child.type === NodeTypes.COMMENT;
 const isAttr = (attr: AttributeNode | DirectiveNode): attr is AttributeNode =>
   attr.type === NodeTypes.ATTRIBUTE;
+const isDirective = (
+  attr: AttributeNode | DirectiveNode
+): attr is DirectiveNode => attr.type === NodeTypes.DIRECTIVE;
 const isInterpolation = (
   child: TemplateChildNode
 ): child is InterpolationNode => child.type === NodeTypes.INTERPOLATION;
@@ -41,7 +45,21 @@ export const parseAttrs = (
       return { key: attr.name, value: attr.value?.content };
     }
 
-    return { key: attr.loc.source };
+    const firstEqual = attr.loc.source.indexOf("=");
+    if (firstEqual === -1) {
+      return {
+        key: attr.loc.source,
+      };
+    }
+
+    const [key, value] = [
+      attr.loc.source.slice(0, firstEqual),
+      attr.loc.source.slice(firstEqual + 1),
+    ];
+    return {
+      key,
+      value: value.replace(/^"|"$/g, ""),
+    };
   });
 
 export const parseText = (child: TextNode): Text => ({
@@ -85,7 +103,7 @@ const parseInterpolation = (child: InterpolationNode): Text => ({
   value: child.loc.source,
 });
 
-export function converVueAst(ast: RootNode): Nodes[] {
+export function convertVueAst(ast: RootNode): Nodes[] {
   const deepConvert = (children: TemplateChildNode[]): Nodes[] =>
     children.reduce<Nodes[]>((acc, child) => {
       if (isText(child)) {
@@ -122,5 +140,5 @@ export function converVueAst(ast: RootNode): Nodes[] {
 }
 
 export function buildVueAst(html: string) {
-  return converVueAst(parse(html));
+  return convertVueAst(parse(html));
 }

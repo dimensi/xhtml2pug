@@ -25,11 +25,11 @@ exports[`parser html: should convert apostrophe.html to match snapshot 1`] = `
 exports[`parser html: should convert attr-multiline.html to match snapshot 1`] = `
 "html
   body
-    img(src=\\"img/close_button.png\\", height=\\"16\\", width=\\"16\\", alt=\\"Home\\", onclick=\\"\\\\
-    mwl.switchClass('#search_title', 'show_title_search', 'show_title_main');\\\\
-    mwl.setGroupTarget('#navigateToggle', '#home', 'show', 'hide');\\\\
-    mwl.switchClass('#slider', 'show_miniapp', 'show_main');\\\\
-    mwl.scrollTo('#main');\\")
+    img(src=\\"img/close_button.png\\", height=\\"16\\", width=\\"16\\", alt=\\"Home\\", onclick=\`
+    mwl.switchClass('#search_title', 'show_title_search', 'show_title_main');
+    mwl.setGroupTarget('#navigateToggle', '#home', 'show', 'hide');
+    mwl.switchClass('#slider', 'show_miniapp', 'show_main');
+    mwl.scrollTo('#main');\`)
 "
 `;
 
@@ -3175,6 +3175,17 @@ exports[`parser vue: should convert attr-multiline.html to match snapshot 1`] = 
     mwl.setGroupTarget('#navigateToggle', '#home', 'show', 'hide');
     mwl.switchClass('#slider', 'show_miniapp', 'show_main');
     mwl.scrollTo('#main');\`)
+"
+`;
+
+exports[`parser vue: should convert attr-multiline2.html to match snapshot 1`] = `
+"html
+  body
+    q-checkbox(v-if=\\"who == 3\\", label=\\"Framework agreement\\", :value=\\"terms.attributes.frameworkAgreement\\", @input=\`
+      (val) => {
+        $set(terms.attributes, 'frameworkAgreement', val)
+      }
+    \`, :disable=\\"readonly\\")
 "
 `;
 
