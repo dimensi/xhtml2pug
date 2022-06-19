@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/dimensi/xhtml2pug/compare/v3.2.1...v3.3.0) (2022-06-19)
+
+
+### Features
+
+* add release-please ([ca3f319](https://github.com/dimensi/xhtml2pug/commit/ca3f319350d6e583437653f33f4c14a1614606a0))
+
+
+### Bug Fixes
+
+* add release-please ([f63d9b9](https://github.com/dimensi/xhtml2pug/commit/f63d9b979fd3e20662bd2b561d4b0187c5c616dc))
+
 ### [3.2.1](https://github.com/dimensi/xhtml2pug/compare/v3.2.0...v3.2.1) (2022-01-03)
 
 
