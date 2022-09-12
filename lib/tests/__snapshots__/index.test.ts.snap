@@ -372,6 +372,23 @@ html.no-js(lang=\\"en\\")
 "
 `;
 
+exports[`parser html: should convert keep-class-attr.html to match snapshot 1`] = `
+"html
+  body
+    div(class=\\"flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8\\")
+      div(class=\\"sm:mx-auto sm:w-full sm:max-w-md w-[100px] -p-10\\")
+"
+`;
+
+exports[`parser html: should convert keep-class-attr.json to match snapshot 1`] = `
+"html
+  body
+    | {
+    | &quot;keepClassAttr&quot;: true
+    | }
+"
+`;
+
 exports[`parser html: should convert leading_equal.html to match snapshot 1`] = `
 "html
   body
@@ -3294,6 +3311,20 @@ exports[`parser vue: should convert headless.html to match snapshot 1`] = `
   head
     script(type=\\"text/javascript\\").
       window.location = \\"/newsite/\\";
+"
+`;
+
+exports[`parser vue: should convert keep-class-attr.html to match snapshot 1`] = `
+"html
+  body
+    div(class=\\"flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8\\")
+      div(class=\\"sm:mx-auto sm:w-full sm:max-w-md w-[100px] -p-10\\")
+"
+`;
+
+exports[`parser vue: should convert keep-class-attr.json to match snapshot 1`] = `
+"html
+  body { &quot;keepClassAttr&quot;: true }
 "
 `;
 
