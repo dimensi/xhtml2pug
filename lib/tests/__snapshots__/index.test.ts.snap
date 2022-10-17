@@ -249,7 +249,7 @@ html.no-js
     meta(charset=\\"utf-8\\")
     meta(http-equiv=\\"X-UA-Compatible\\", content=\\"IE=edge,chrome=1\\")
     title
-    meta(name=\\"description\\", content=)
+    meta(name=\\"description\\", content=\\"\\")
     meta(name=\\"viewport\\", content=\\"width=device-width\\")
     link(rel=\\"stylesheet\\", href=\\"css/bootstrap.min.css\\")
     style.
@@ -295,7 +295,7 @@ html(lang=\\"en\\")
 exports[`parser html: should convert empty-class.html to match snapshot 1`] = `
 "html
   head
-  body(class=)
+  body(class=\\"\\")
     code
       | blah
       | blah
@@ -341,8 +341,8 @@ html.no-js(lang=\\"en\\")
     meta(charset=\\"utf-8\\")
     meta(http-equiv=\\"X-UA-Compatible\\", content=\\"IE=edge,chrome=1\\")
     title
-    meta(name=\\"description\\", content=)
-    meta(name=\\"author\\", content=)
+    meta(name=\\"description\\", content=\\"\\")
+    meta(name=\\"author\\", content=\\"\\")
     meta(name=\\"viewport\\", content=\\"width=device-width,initial-scale=1\\")
     link(rel=\\"stylesheet\\", href=\\"css/style.css\\")
     script(src=\\"js/libs/modernizr-2.0.6.min.js\\")
@@ -369,6 +369,16 @@ html.no-js(lang=\\"en\\")
       <script src=\\"//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js\\"></script>
       <script>window.attachEvent(\\"onload\\",function(){CFInstall.check({mode:\\"overlay\\"})})</script>
       <![endif]
+"
+`;
+
+exports[`parser html: should convert keep-empty-quote.html to match snapshot 1`] = `
+"html
+  body
+    div
+      a(href=\\"\\") empty link
+      input(type=\\"checkbox\\", checked)
+      | checked box
 "
 `;
 
@@ -3268,7 +3278,7 @@ exports[`parser vue: should convert conditional.html to match snapshot 1`] = `
 exports[`parser vue: should convert empty-class.html to match snapshot 1`] = `
 "html
   head
-  body(class=)
+  body(class=\\"\\")
     code blah blah
 "
 `;
@@ -3294,6 +3304,16 @@ exports[`parser vue: should convert headless.html to match snapshot 1`] = `
   head
     script(type=\\"text/javascript\\").
       window.location = \\"/newsite/\\";
+"
+`;
+
+exports[`parser vue: should convert keep-empty-quote.html to match snapshot 1`] = `
+"html
+  body
+    div
+      a(href=\\"\\") empty link
+      input(type=\\"checkbox\\", checked)
+      | checked box
 "
 `;
 

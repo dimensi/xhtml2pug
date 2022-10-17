@@ -45,7 +45,7 @@ const wrapInQuotes = (
 export const compileAttrs = (attrs: Attr[], options: CompileOptions) =>
   attrs
     .map(({ key, value }) =>
-      [key, value && wrapInQuotes(value, options)]
+      [key, wrapInQuotes(value, options)]
         .filter((str) => str != null)
         .join("=")
     )
